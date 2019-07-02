@@ -1,5 +1,5 @@
 /**
- * Data: 13 de jun de 2019
+ * Data: 26 de jun de 2019
  */
 package br.teresafernandes.evoluaserver.dominio;
 
@@ -23,7 +23,7 @@ import br.teresafernandes.evoluaserver.util.ValidatorUtil;
  *
  */
 @Entity
-public class Pessoa implements EntidadePersistente{
+public class Setor implements EntidadePersistente{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,11 +33,8 @@ public class Pessoa implements EntidadePersistente{
 	private String nome;
 	
 	@ManyToOne
-	@JoinColumn(name="id_setor", nullable=false)
-	private Setor setor;
-	
-	@Column(name="cargo", nullable=false)
-	private String cargo;
+	@JoinColumn(name="id_pessoa")
+	private Pessoa gestor;
 	
 	public Long getId() {
 		return id;
@@ -55,37 +52,26 @@ public class Pessoa implements EntidadePersistente{
 		this.nome = nome;
 	}
 
-	public Setor getSetor() {
-		return setor;
+	public Pessoa getGestor() {
+		return gestor;
 	}
 
-	public void setSetor(Setor setor) {
-		this.setor = setor;
-	}
-
-	public String getCargo() {
-		return cargo;
-	}
-
-	public void setCargo(String cargo) {
-		this.cargo = cargo;
+	public void setGestor(Pessoa gestor) {
+		this.gestor = gestor;
 	}
 	
-	@JsonProperty("setor")
+	@JsonProperty("gestor")
 	public void getGestor(Map<String,Object> mapGestor) {
-		this.setor = null;
+		gestor = null;
 		if(mapGestor.containsKey("id")) {
-			this.setor = new Setor();
-	        this.setor.setId(((Integer)mapGestor.get("id")).longValue());
+			gestor = new Pessoa();
+	        gestor.setId(((Integer)mapGestor.get("id")).longValue());
 		}
     }
 	
 	public void validar() throws ServiceBusinessException {
 		if(ValidatorUtil.isEmpty(nome)) {
 			throw new ServiceBusinessException("Nome: campo obrigatório.");
-		}
-		if(ValidatorUtil.isEmpty(setor)) {
-			throw new ServiceBusinessException("Setor: campo obrigatório.");
 		}
 	}
 
