@@ -15,9 +15,6 @@ import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import br.teresafernandes.evoluaserver.exception.ServiceBusinessException;
-import br.teresafernandes.evoluaserver.util.ValidatorUtil;
-
 /**
  * @author Teresa Fernandes
  *
@@ -36,8 +33,9 @@ public class Pessoa implements EntidadePersistente{
 	@JoinColumn(name="id_setor", nullable=false)
 	private Setor setor;
 	
-	@Column(name="cargo", nullable=false)
-	private String cargo;
+	@ManyToOne
+	@JoinColumn(name="id_cargo", nullable=false)
+	private Cargo cargo;
 	
 	public Long getId() {
 		return id;
@@ -63,11 +61,11 @@ public class Pessoa implements EntidadePersistente{
 		this.setor = setor;
 	}
 
-	public String getCargo() {
+	public Cargo getCargo() {
 		return cargo;
 	}
 
-	public void setCargo(String cargo) {
+	public void setCargo(Cargo cargo) {
 		this.cargo = cargo;
 	}
 	
@@ -80,13 +78,13 @@ public class Pessoa implements EntidadePersistente{
 		}
     }
 	
-	public void validar() throws ServiceBusinessException {
-		if(ValidatorUtil.isEmpty(nome)) {
-			throw new ServiceBusinessException("Nome: campo obrigatório.");
+	@JsonProperty("cargo")
+	public void getCargo(Map<String,Object> mapCargo) {
+		this.cargo = null;
+		if(mapCargo.containsKey("id")) {
+			this.cargo = new Cargo();
+	        this.cargo.setId(((Integer)mapCargo.get("id")).longValue());
 		}
-		if(ValidatorUtil.isEmpty(setor)) {
-			throw new ServiceBusinessException("Setor: campo obrigatório.");
-		}
-	}
+    }
 
 }

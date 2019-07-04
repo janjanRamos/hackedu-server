@@ -4,17 +4,16 @@
 package br.teresafernandes.evoluaserver.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.teresafernandes.evoluaserver.dominio.Pessoa;
 import br.teresafernandes.evoluaserver.exception.ServiceBusinessException;
+import br.teresafernandes.evoluaserver.repo.CargoRepository;
 import br.teresafernandes.evoluaserver.repo.PessoaRepository;
 import br.teresafernandes.evoluaserver.repo.SetorRepository;
+import br.teresafernandes.evoluaserver.util.ValidatorUtil;
 
 /**
  * @author Teresa Fernandes
@@ -27,6 +26,8 @@ public class PessoaController extends AbstractController<Pessoa>{
 
 	@Autowired
 	SetorRepository setorRepository;
+	@Autowired
+	CargoRepository cargoRepository;
 	
 	/**
 	 * @param repository
@@ -35,18 +36,25 @@ public class PessoaController extends AbstractController<Pessoa>{
 		super(repository);
 	}
 	
-	@PostMapping
-	public ResponseEntity<Object> create(@RequestBody Pessoa obj) {
-		try {
-			obj.validar();
-			if(obj.getSetor() != null 
-					&& !setorRepository.existsById(obj.getSetor().getId())) {
-				throw new ServiceBusinessException("Setor inválido");
-			}
-		}catch (ServiceBusinessException e) {
-		    return new ResponseEntity<Object>(e, e.getStatus());
+	public void validarAntesSalvar(Pessoa obj) throws ServiceBusinessException {
+		if(ValidatorUtil.isEmpty(obj.getNome())) {
+			addErro("Nome: campo obrigatório.");
+		}
+		if(ValidatorUtil.isEmpty(obj.getSetor())) {
+			addErro("Setor: campo obrigatório.");
+		}
+		if(ValidatorUtil.isEmpty(obj.getCargo())) {
+			addErro("Cargo: campo obrigatório.");
+		}
+		if(obj.getSetor() != null 
+				&& !setorRepository.existsById(obj.getSetor().getId())) {
+			addErro("Setor inválido.");
+		}
+		if(obj.getCargo() != null 
+				&& !cargoRepository.existsById(obj.getCargo().getId())) {
+			addErro("Cargo inválido.");
 		}
 		
-		return ResponseEntity.ok().body(repository.save(obj));
+		checarErros();
 	}
 }

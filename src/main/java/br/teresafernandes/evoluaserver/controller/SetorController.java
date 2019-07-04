@@ -4,10 +4,7 @@
 package br.teresafernandes.evoluaserver.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,6 +12,7 @@ import br.teresafernandes.evoluaserver.dominio.Setor;
 import br.teresafernandes.evoluaserver.exception.ServiceBusinessException;
 import br.teresafernandes.evoluaserver.repo.PessoaRepository;
 import br.teresafernandes.evoluaserver.repo.SetorRepository;
+import br.teresafernandes.evoluaserver.util.ValidatorUtil;
 
 /**
  * @author Teresa Fernandes
@@ -32,18 +30,15 @@ public class SetorController extends AbstractController<Setor>{
 		super(setorRepository);
 	}
 
-	@PostMapping
-	public ResponseEntity<Object> create(@RequestBody Setor obj) {
-		try {
-			obj.validar();
-			if(obj.getGestor() != null 
-					&& !pessoaRepository.existsById(obj.getGestor().getId())) {
-				throw new ServiceBusinessException("Pessoa inválida");
-			}
-		}catch (ServiceBusinessException e) {
-			return new ResponseEntity<Object>(e, e.getStatus());
+	public void validarAntesSalvar(Setor obj) throws ServiceBusinessException {
+		if(ValidatorUtil.isEmpty(obj.getNome())) {
+			addErro("Nome: campo obrigatório.");
+		}
+		if(obj.getGestor() != null 
+				&& !pessoaRepository.existsById(obj.getGestor().getId())) {
+			addErro("Gestor inválido.");
 		}
 		
-		return ResponseEntity.ok().body(repository.save(obj));
+		checarErros();
 	}
 }
