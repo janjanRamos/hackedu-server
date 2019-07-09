@@ -37,6 +37,8 @@ public class Pessoa implements EntidadePersistente{
 	@JoinColumn(name="id_cargo", nullable=false)
 	private Cargo cargo;
 	
+	private Boolean gestor;
+	
 	public Long getId() {
 		return id;
 	}
@@ -69,6 +71,14 @@ public class Pessoa implements EntidadePersistente{
 		this.cargo = cargo;
 	}
 	
+	public Boolean getGestor() {
+		return gestor;
+	}
+
+	public void setGestor(Boolean gestor) {
+		this.gestor = gestor;
+	}
+
 	@JsonProperty("setor")
 	public void getGestor(Map<String,Object> mapGestor) {
 		this.setor = null;

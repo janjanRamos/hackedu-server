@@ -13,8 +13,8 @@ import javax.persistence.Id;
  * @author Teresa Fernandes
  *
  */
-@Entity
-public class Setor implements EntidadePersistente{
+@Entity(name="tag")
+public class Tag implements EntidadePersistente{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

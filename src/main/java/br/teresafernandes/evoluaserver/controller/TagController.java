@@ -3,15 +3,13 @@
  */
 package br.teresafernandes.evoluaserver.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.teresafernandes.evoluaserver.dominio.Setor;
+import br.teresafernandes.evoluaserver.dominio.Tag;
 import br.teresafernandes.evoluaserver.exception.ServiceBusinessException;
-import br.teresafernandes.evoluaserver.repo.PessoaRepository;
-import br.teresafernandes.evoluaserver.repo.SetorRepository;
+import br.teresafernandes.evoluaserver.repo.TagRepository;
 import br.teresafernandes.evoluaserver.util.ValidatorUtil;
 
 /**
@@ -20,17 +18,14 @@ import br.teresafernandes.evoluaserver.util.ValidatorUtil;
  */
 @CrossOrigin
 @RestController
-@RequestMapping({ "/setor" })
-public class SetorController extends AbstractController<Setor>{
+@RequestMapping({ "/tag" })
+public class TagController extends AbstractController<Tag>{
 
-	@Autowired
-	PessoaRepository pessoaRepository;
-	
-	SetorController(SetorRepository setorRepository) {
-		super(setorRepository);
+	TagController(TagRepository tagRepository) {
+		super(tagRepository);
 	}
 
-	public void validarAntesSalvar(Setor obj) throws ServiceBusinessException {
+	public void validarAntesSalvar(Tag obj) throws ServiceBusinessException {
 		if(ValidatorUtil.isEmpty(obj.getNome())) {
 			addErro("Nome: campo obrigatório.");
 		}
