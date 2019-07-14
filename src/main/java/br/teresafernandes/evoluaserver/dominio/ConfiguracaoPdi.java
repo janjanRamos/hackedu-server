@@ -36,7 +36,8 @@ public class ConfiguracaoPdi implements EntidadePersistente{
 	@Column(name="periodicidade_em_meses", nullable=false)
 	private Integer periodicidadeEmMeses;
 	
-	private Boolean ativo;
+	@Column(name="ativo", nullable=false)
+	private Boolean ativo = true;
 	
 	public Long getId() {
 		return id;

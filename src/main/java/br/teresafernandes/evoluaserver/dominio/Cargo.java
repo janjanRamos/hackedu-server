@@ -23,6 +23,9 @@ public class Cargo implements EntidadePersistente{
 	@Column(name="nome", nullable=false)
 	private String nome;
 	
+	@Column(name="ativo", nullable=false)
+	private Boolean ativo = true;
+	
 	public Long getId() {
 		return id;
 	}
@@ -37,6 +40,14 @@ public class Cargo implements EntidadePersistente{
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	public Boolean getAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(Boolean ativo) {
+		this.ativo = ativo;
 	}
 
 }

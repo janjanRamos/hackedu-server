@@ -12,7 +12,6 @@ import br.teresafernandes.evoluaserver.dominio.Setor;
 import br.teresafernandes.evoluaserver.exception.ServiceBusinessException;
 import br.teresafernandes.evoluaserver.repo.PessoaRepository;
 import br.teresafernandes.evoluaserver.repo.SetorRepository;
-import br.teresafernandes.evoluaserver.util.ValidatorUtil;
 
 /**
  * @author Teresa Fernandes
@@ -31,9 +30,7 @@ public class SetorController extends AbstractController<Setor>{
 	}
 
 	public void validarAntesSalvar(Setor obj) throws ServiceBusinessException {
-		if(ValidatorUtil.isEmpty(obj.getNome())) {
-			addErro("Nome: campo obrigatório.");
-		}
+		validarObrigatoriedade(obj.getNome(), "Nome");
 		
 		checarErros();
 	}

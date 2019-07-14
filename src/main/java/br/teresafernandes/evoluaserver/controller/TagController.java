@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 import br.teresafernandes.evoluaserver.dominio.Tag;
 import br.teresafernandes.evoluaserver.exception.ServiceBusinessException;
 import br.teresafernandes.evoluaserver.repo.TagRepository;
-import br.teresafernandes.evoluaserver.util.ValidatorUtil;
 
 /**
  * @author Teresa Fernandes
@@ -26,9 +25,7 @@ public class TagController extends AbstractController<Tag>{
 	}
 
 	public void validarAntesSalvar(Tag obj) throws ServiceBusinessException {
-		if(ValidatorUtil.isEmpty(obj.getNome())) {
-			addErro("Nome: campo obrigatório.");
-		}
+		validarObrigatoriedade(obj.getNome(), "Nome");
 		
 		checarErros();
 	}

@@ -3,6 +3,7 @@
  */
 package br.teresafernandes.evoluaserver.dominio;
 
+import java.util.Date;
 import java.util.Map;
 
 import javax.persistence.Column;
@@ -27,17 +28,20 @@ public class ItemPdi implements EntidadePersistente{
 	private Long id;
 	
 	@ManyToOne
-	@JoinColumn(name="id_pdi_pessoa", nullable=false)
-	private Pdi pdiPessoa;
+	@JoinColumn(name="id_pdi", nullable=false)
+	private Pdi pdi;
 	
 	@Column(name="descricao", nullable=false)
 	private String descricao;
 	
 	@Column(name="data_prevista")
-	private String dataPrevista;
+	private Date dataPrevista;
 	
 	@Column(name="data_realizacao")
-	private String dataRealizacao;
+	private Date dataRealizacao;
+	
+	@Column(name="ativo", nullable=false)
+	private Boolean ativo = true;
 	
 	public Long getId() {
 		return id;
@@ -55,28 +59,44 @@ public class ItemPdi implements EntidadePersistente{
 		this.descricao = descricao;
 	}
 
-	public String getDataPrevista() {
+	public Date getDataPrevista() {
 		return dataPrevista;
 	}
 
-	public void setDataPrevista(String dataPrevista) {
+	public void setDataPrevista(Date dataPrevista) {
 		this.dataPrevista = dataPrevista;
 	}
 
-	public String getDataRealizacao() {
+	public Date getDataRealizacao() {
 		return dataRealizacao;
 	}
 
-	public void setDataRealizacao(String dataRealizacao) {
+	public void setDataRealizacao(Date dataRealizacao) {
 		this.dataRealizacao = dataRealizacao;
 	}
 
-	@JsonProperty("pdiPessoa")
-	public void getPdiPessoa(Map<String,Object> mapPdi) {
-		this.pdiPessoa = null;
+	public Pdi getPdi() {
+		return pdi;
+	}
+
+	public void setPdi(Pdi pdi) {
+		this.pdi = pdi;
+	}
+
+	public Boolean getAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(Boolean ativo) {
+		this.ativo = ativo;
+	}
+
+	@JsonProperty("pdi")
+	public void getPdi(Map<String,Object> mapPdi) {
+		this.pdi = null;
 		if(mapPdi.containsKey("id")) {
-			this.pdiPessoa = new Pdi();
-	        this.pdiPessoa.setId(((Integer)mapPdi.get("id")).longValue());
+			this.pdi = new Pdi();
+	        this.pdi.setId(((Integer)mapPdi.get("id")).longValue());
 		}
     }
 

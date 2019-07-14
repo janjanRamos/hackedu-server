@@ -3,16 +3,19 @@
  */
 package br.teresafernandes.evoluaserver.repo;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
 import br.teresafernandes.evoluaserver.dominio.ItemPdi;
+import br.teresafernandes.evoluaserver.dominio.Pdi;
 
 /**
  * @author Teresa Fernandes
  *
  */
 @Repository
-public interface ItemPdiRepository extends JpaRepository<ItemPdi, Long>{
+public interface ItemPdiRepository extends AbstractRepository<ItemPdi>{
 
+	List<ItemPdi> findByPdiAndAtivoIsTrue(Pdi pdi);
 }

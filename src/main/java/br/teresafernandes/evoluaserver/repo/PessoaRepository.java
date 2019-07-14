@@ -3,7 +3,6 @@
  */
 package br.teresafernandes.evoluaserver.repo;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import br.teresafernandes.evoluaserver.dominio.Pessoa;
@@ -13,6 +12,6 @@ import br.teresafernandes.evoluaserver.dominio.Pessoa;
  *
  */
 @Repository
-public interface PessoaRepository extends JpaRepository<Pessoa, Long>{
+public interface PessoaRepository extends AbstractRepository<Pessoa>{
 
 }

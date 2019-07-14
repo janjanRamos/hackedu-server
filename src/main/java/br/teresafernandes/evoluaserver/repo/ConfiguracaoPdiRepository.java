@@ -3,7 +3,6 @@
  */
 package br.teresafernandes.evoluaserver.repo;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import br.teresafernandes.evoluaserver.dominio.ConfiguracaoPdi;
@@ -13,6 +12,5 @@ import br.teresafernandes.evoluaserver.dominio.ConfiguracaoPdi;
  *
  */
 @Repository
-public interface ConfiguracaoPdiRepository extends JpaRepository<ConfiguracaoPdi, Long>{
-
+public interface ConfiguracaoPdiRepository extends AbstractRepository<ConfiguracaoPdi>{
 }

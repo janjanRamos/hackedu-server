@@ -3,7 +3,6 @@
  */
 package br.teresafernandes.evoluaserver.repo;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import br.teresafernandes.evoluaserver.dominio.TagItemPdi;
@@ -13,6 +12,6 @@ import br.teresafernandes.evoluaserver.dominio.TagItemPdi;
  *
  */
 @Repository
-public interface TagItemPdiRepository extends JpaRepository<TagItemPdi, Long>{
+public interface TagItemPdiRepository extends AbstractRepository<TagItemPdi>{
 
 }

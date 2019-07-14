@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 import br.teresafernandes.evoluaserver.dominio.Cargo;
 import br.teresafernandes.evoluaserver.exception.ServiceBusinessException;
 import br.teresafernandes.evoluaserver.repo.CargoRepository;
-import br.teresafernandes.evoluaserver.util.ValidatorUtil;
 
 /**
  * @author Teresa Fernandes
@@ -26,9 +25,7 @@ public class CargoController extends AbstractController<Cargo>{
 	}
 
 	public void validarAntesSalvar(Cargo obj) throws ServiceBusinessException {
-		if(ValidatorUtil.isEmpty(obj.getNome())) {
-			addErro("Nome: campo obrigatório.");
-		}
+		validarObrigatoriedade(obj.getNome(), "Nome");
 		
 		checarErros();
 	}

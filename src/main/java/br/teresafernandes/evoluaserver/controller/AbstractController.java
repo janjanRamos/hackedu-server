@@ -6,7 +6,6 @@ package br.teresafernandes.evoluaserver.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import br.teresafernandes.evoluaserver.dominio.EntidadePersistente;
 import br.teresafernandes.evoluaserver.exception.ServiceBusinessException;
+import br.teresafernandes.evoluaserver.repo.AbstractRepository;
 import br.teresafernandes.evoluaserver.util.ValidatorUtil;
 
 /**
@@ -27,17 +27,17 @@ import br.teresafernandes.evoluaserver.util.ValidatorUtil;
 @CrossOrigin
 public abstract class AbstractController<T extends EntidadePersistente> {
 
-	protected JpaRepository<T, Long> repository;
+	protected AbstractRepository<T> repository;
 	private List<String> listaErros;
 
-	AbstractController(JpaRepository<T, Long> repository) {
+	AbstractController(AbstractRepository<T> repository) {
 		this.repository = repository;
 	}
 
 	@GetMapping
 	public ResponseEntity<List<T>> findAll() {
 		limparErros();
-		return ResponseEntity.ok().body(repository.findAll());
+		return ResponseEntity.ok().body(repository.findByAtivoIsTrue());
 	}
 
 	@GetMapping(path = { "/{id}" })
@@ -48,21 +48,41 @@ public abstract class AbstractController<T extends EntidadePersistente> {
 	}
 
 	@PostMapping
-	public ResponseEntity<Object> create(@RequestBody T obj) {
+	public ResponseEntity<? extends Object> create(@RequestBody T obj) {
 		try {
 			limparErros();
 			validarAntesSalvar(obj);
-			return ResponseEntity.ok().body(repository.save(obj));
+			obj.setAtivo(true);
+			obj = repository.save(obj);
+			aposSalvar(obj);
+			return ResponseEntity.ok().body(obj);
 		}catch (ServiceBusinessException e) {
 		    return new ResponseEntity<Object>(e, e.getStatus());
 		}
 	}
 
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<T> update(@PathVariable("id") long id, @RequestBody T obj) {
+	public ResponseEntity<? extends Object> update(@PathVariable("id") long id, @RequestBody T obj) {
+		limparErros();
+		return repository.findById(id).map(record -> {
+			try {
+				obj.setId(record.getId());
+				validarAntesSalvar(obj);
+				T updated = repository.save(obj);
+				aposSalvar(obj);
+				return ResponseEntity.ok().body(updated);
+			}catch (ServiceBusinessException e) {
+			    return new ResponseEntity<Object>(e, e.getStatus());
+			}
+		}).orElse(ResponseEntity.notFound().build());
+	}
+	
+	@PutMapping(path = { "/inativar/{id}" })
+	public ResponseEntity<?> inativar(@PathVariable("id") long id, @RequestBody T obj) {
 		limparErros();
 		return repository.findById(id).map(record -> {
 			obj.setId(record.getId());
+			obj.setAtivo(false);
 			T updated = repository.save(obj);
 			return ResponseEntity.ok().body(updated);
 		}).orElse(ResponseEntity.notFound().build());
@@ -78,12 +98,19 @@ public abstract class AbstractController<T extends EntidadePersistente> {
 	}
 	
 	public abstract void validarAntesSalvar(T obj) throws ServiceBusinessException;
+	public void aposSalvar(T obj) throws ServiceBusinessException{};
 	
 	public void addErro(String erro) {
 		if(this.listaErros == null) {
 			limparErros();
 		}
 		this.listaErros.add(erro);
+	}
+	
+	public void validarObrigatoriedade(Object obj, String nome) {
+		if(ValidatorUtil.isEmpty(obj)) {
+			addErro(nome + ": campo obrigatório.");
+		}
 	}
 	
 	public void limparErros() {

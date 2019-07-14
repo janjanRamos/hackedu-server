@@ -39,6 +39,9 @@ public class Pessoa implements EntidadePersistente{
 	
 	private Boolean gestor;
 	
+	@Column(name="ativo", nullable=false)
+	private Boolean ativo = true;
+	
 	public Long getId() {
 		return id;
 	}
@@ -77,6 +80,14 @@ public class Pessoa implements EntidadePersistente{
 
 	public void setGestor(Boolean gestor) {
 		this.gestor = gestor;
+	}
+
+	public Boolean getAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(Boolean ativo) {
+		this.ativo = ativo;
 	}
 
 	@JsonProperty("setor")

@@ -5,6 +5,7 @@ package br.teresafernandes.evoluaserver.dominio;
 
 import java.util.Map;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -33,6 +34,9 @@ public class TagItemPdi implements EntidadePersistente{
 	@JoinColumn(name="id_tag", nullable=false)
 	private Tag tag;
 	
+	@Column(name="ativo", nullable=false)
+	private Boolean ativo = true;
+	
 	public Long getId() {
 		return id;
 	}
@@ -55,6 +59,14 @@ public class TagItemPdi implements EntidadePersistente{
 
 	public void setTag(Tag tag) {
 		this.tag = tag;
+	}
+
+	public Boolean getAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(Boolean ativo) {
+		this.ativo = ativo;
 	}
 
 	@JsonProperty("itemPdi")

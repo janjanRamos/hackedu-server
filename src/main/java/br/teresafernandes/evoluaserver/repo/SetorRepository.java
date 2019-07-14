@@ -3,7 +3,6 @@
  */
 package br.teresafernandes.evoluaserver.repo;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import br.teresafernandes.evoluaserver.dominio.Setor;
@@ -13,6 +12,6 @@ import br.teresafernandes.evoluaserver.dominio.Setor;
  *
  */
 @Repository
-public interface SetorRepository extends JpaRepository<Setor, Long>{
+public interface SetorRepository extends AbstractRepository<Setor>{
 
 }

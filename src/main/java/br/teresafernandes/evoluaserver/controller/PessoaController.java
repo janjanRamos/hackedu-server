@@ -13,7 +13,6 @@ import br.teresafernandes.evoluaserver.exception.ServiceBusinessException;
 import br.teresafernandes.evoluaserver.repo.CargoRepository;
 import br.teresafernandes.evoluaserver.repo.PessoaRepository;
 import br.teresafernandes.evoluaserver.repo.SetorRepository;
-import br.teresafernandes.evoluaserver.util.ValidatorUtil;
 
 /**
  * @author Teresa Fernandes
@@ -37,15 +36,11 @@ public class PessoaController extends AbstractController<Pessoa>{
 	}
 	
 	public void validarAntesSalvar(Pessoa obj) throws ServiceBusinessException {
-		if(ValidatorUtil.isEmpty(obj.getNome())) {
-			addErro("Nome: campo obrigatório.");
-		}
-		if(ValidatorUtil.isEmpty(obj.getSetor())) {
-			addErro("Setor: campo obrigatório.");
-		}
-		if(ValidatorUtil.isEmpty(obj.getCargo())) {
-			addErro("Cargo: campo obrigatório.");
-		}
+		
+		validarObrigatoriedade(obj.getNome(), "Nome");
+		validarObrigatoriedade(obj.getSetor(), "Setor");
+		validarObrigatoriedade(obj.getCargo(), "Cargo");
+		
 		if(obj.getSetor() != null 
 				&& !setorRepository.existsById(obj.getSetor().getId())) {
 			addErro("Setor inválido.");

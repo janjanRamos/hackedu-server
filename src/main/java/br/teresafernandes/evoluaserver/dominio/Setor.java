@@ -23,6 +23,9 @@ public class Setor implements EntidadePersistente{
 	@Column(name="nome", nullable=false)
 	private String nome;
 	
+	@Column(name="ativo", nullable=false)
+	private Boolean ativo = true;
+	
 	public Long getId() {
 		return id;
 	}
@@ -39,4 +42,11 @@ public class Setor implements EntidadePersistente{
 		this.nome = nome;
 	}
 
+	public Boolean getAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(Boolean ativo) {
+		this.ativo = ativo;
+	}
 }
