@@ -38,6 +38,8 @@ public class PessoaController extends AbstractController<Pessoa>{
 	public void validarAntesSalvar(Pessoa obj) throws ServiceBusinessException {
 		
 		validarObrigatoriedade(obj.getNome(), "Nome");
+		validarObrigatoriedade(obj.getCpf(), "CPF");
+		validarObrigatoriedade(obj.getEmail(), "Email");
 		validarObrigatoriedade(obj.getSetor(), "Setor");
 		validarObrigatoriedade(obj.getCargo(), "Cargo");
 		
@@ -48,6 +50,14 @@ public class PessoaController extends AbstractController<Pessoa>{
 		if(obj.getCargo() != null 
 				&& !cargoRepository.existsById(obj.getCargo().getId())) {
 			addErro("Cargo inválido.");
+		}
+		
+		if(((PessoaRepository) repository).existsByEmailAndAtivoIsTrue(obj.getEmail())) {
+			addErro("Já existe um cadastro com este email.");
+		}
+		
+		if(((PessoaRepository) repository).existsByCpfAndAtivoIsTrue(obj.getCpf())) {
+			addErro("Já existe um cadastro com este CPF.");
 		}
 		
 		checarErros();

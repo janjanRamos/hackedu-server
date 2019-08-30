@@ -13,5 +13,8 @@ import br.teresafernandes.evoluaserver.dominio.Pessoa;
  */
 @Repository
 public interface PessoaRepository extends AbstractRepository<Pessoa>{
-
+	Boolean existsByCpfAndAtivoIsTrue(String cpf);
+	Boolean existsByEmailAndAtivoIsTrue(String email);
+	Pessoa findFirstByEmailAndAtivoIsTrue(String email);
+	Pessoa findFirstByCpfAndAtivoIsTrue(String cpf);
 }

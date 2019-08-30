@@ -29,6 +29,12 @@ public class Pessoa implements EntidadePersistente{
 	@Column(name="nome", nullable=false)
 	private String nome;
 	
+	@Column(name="cpf", nullable=false)
+	private String cpf;
+	
+	@Column(name="email", nullable=false)
+	private String email;
+	
 	@ManyToOne
 	@JoinColumn(name="id_setor", nullable=false)
 	private Setor setor;
@@ -88,6 +94,22 @@ public class Pessoa implements EntidadePersistente{
 
 	public void setAtivo(Boolean ativo) {
 		this.ativo = ativo;
+	}
+	
+	public String getCpf() {
+		return cpf;
+	}
+
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	@JsonProperty("setor")
