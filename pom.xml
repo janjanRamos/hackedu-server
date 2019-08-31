@@ -10,9 +10,9 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>br.teresafernandes</groupId>
-	<artifactId>evolua-server</artifactId>
+	<artifactId>hackedu-server</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>evolua-server</name>
+	<name>hackedu-server</name>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
